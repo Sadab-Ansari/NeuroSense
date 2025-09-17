@@ -165,7 +165,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Mood Trend Chart */}
         <Card className="glass-card">
           <CardHeader>
@@ -178,9 +178,9 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px]">
+            <ChartContainer config={chartConfig} className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={moodData}>
+                <AreaChart data={moodData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis dataKey="date" />
                   <YAxis />
@@ -219,48 +219,50 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={emotionDistribution}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={120}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {emotionDistribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <ChartTooltip 
-                  content={({ active, payload }) => {
-                    if (active && payload && payload.length) {
-                      const data = payload[0].payload;
-                      return (
-                        <div className="bg-background border border-border rounded-lg p-2 shadow-lg">
-                          <p className="text-sm font-medium">{data.name}</p>
-                          <p className="text-sm text-primary">{data.value}%</p>
-                        </div>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="grid grid-cols-2 gap-2 mt-4">
-              {emotionDistribution.map((emotion) => (
-                <div key={emotion.name} className="flex items-center gap-2">
-                  <div 
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: emotion.color }}
+            <div className="flex flex-col items-center">
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={emotionDistribution}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={120}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {emotionDistribution.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <ChartTooltip 
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        const data = payload[0].payload;
+                        return (
+                          <div className="bg-background border border-border rounded-lg p-2 shadow-lg">
+                            <p className="text-sm font-medium">{data.name}</p>
+                            <p className="text-sm text-primary">{data.value}%</p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
                   />
-                  <span className="text-sm font-medium">{emotion.name}</span>
-                  <span className="text-sm text-muted-foreground ml-auto">{emotion.value}%</span>
-                </div>
-              ))}
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="grid grid-cols-2 gap-2 mt-4 w-full">
+                {emotionDistribution.map((emotion) => (
+                  <div key={emotion.name} className="flex items-center gap-2">
+                    <div 
+                      className="w-3 h-3 rounded-full"
+                      style={{ backgroundColor: emotion.color }}
+                    />
+                    <span className="text-sm font-medium">{emotion.name}</span>
+                    <span className="text-sm text-muted-foreground ml-auto">{emotion.value}%</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
