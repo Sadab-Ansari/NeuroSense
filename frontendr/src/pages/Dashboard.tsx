@@ -36,8 +36,12 @@ import {
   Activity,
   Award,
   ArrowUp,
-  ArrowDown
+  ArrowDown,
+  Settings
 } from "lucide-react";
+import { useUser } from '@clerk/clerk-react';
+import { isAdmin } from '@/lib/admin';
+import { Link } from 'react-router-dom';
 
 // Mock data
 const moodData = [
@@ -118,19 +122,57 @@ const stats = [
 ];
 
 export default function Dashboard() {
+  const { user } = useUser();
+  const userIsAdmin = isAdmin(user);
+
   return (
     <div className="space-y-6 animate-fade-in">
+      {/* Admin Welcome Message */}
+      {userIsAdmin && (
+        <div className="mb-6 p-4 sm:p-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-200 dark:border-purple-700 rounded-lg animate-admin-welcome shadow-lg">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="flex items-center gap-3 flex-1">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg">
+                <Settings className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-purple-700 dark:text-purple-300">
+                  Welcome back, Admin!
+                </h2>
+                <p className="text-sm text-purple-600 dark:text-purple-400">
+                  You have administrative privileges. Manage users, analytics, and system settings.
+                </p>
+              </div>
+            </div>
+            <div className="w-full sm:w-auto">
+              <Link to="/admin/overview">
+                <Button className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-md hover:shadow-lg transition-all duration-300">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Open Admin Panel
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
         <div>
           <h1 className="text-3xl font-bold gradient-text">Mental Health Dashboard</h1>
           <p className="text-muted-foreground">Track your emotional wellness journey</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 items-center">
           <Badge className="bg-gradient-to-r from-blue-50 to-green-50 text-blue-700 border border-blue-200 dark:from-blue-900/20 dark:to-green-900/20 dark:text-blue-300 dark:border-blue-700">
             <Activity className="w-3 h-3 mr-1" />
             Active Monitoring
           </Badge>
+          {userIsAdmin && (
+            <Badge className="bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 border border-purple-200 dark:from-purple-900/20 dark:to-pink-900/20 dark:text-purple-300 dark:border-purple-700">
+              <Settings className="w-3 h-3 mr-1" />
+              Admin Access
+            </Badge>
+          )}
           <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-md hover:shadow-lg dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700">
             New Assessment
           </Button>

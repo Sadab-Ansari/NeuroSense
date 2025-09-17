@@ -4,9 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
+import { SignedIn, SignedOut, RedirectToSignIn, useUser } from '@clerk/clerk-react';
 import { MainLayout } from "@/components/layout/main-layout";
 import { AdminLayout } from "@/components/layout/admin-layout";
+import { isAdmin } from "@/lib/admin";
 
 // Pages
 import Landing from "./pages/Landing";
@@ -27,6 +28,17 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminSettings from "./pages/admin/AdminSettings";
 
 const queryClient = new QueryClient();
+
+// Admin Route Guard Component
+function AdminRouteGuard({ children }: { children: React.ReactNode }) {
+  const { user } = useUser();
+  
+  if (!isAdmin(user)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  
+  return <>{children}</>;
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -65,7 +77,11 @@ const App = () => (
                   </Route>
                   
                   {/* Admin Routes with Admin Layout */}
-                  <Route element={<AdminLayout />}>
+                  <Route element={
+                    <AdminRouteGuard>
+                      <AdminLayout />
+                    </AdminRouteGuard>
+                  }>
                     <Route path="/admin/overview" element={<AdminOverview />} />
                     <Route path="/admin/users" element={<AdminUsers />} />
                     <Route path="/admin/analytics" element={<AdminAnalytics />} />
