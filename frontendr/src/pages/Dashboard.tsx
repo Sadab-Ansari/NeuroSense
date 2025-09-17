@@ -178,9 +178,9 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px] w-full">
+            <ChartContainer config={chartConfig} className="h-[300px] w-full mr-8">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={moodData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+                <AreaChart data={moodData} margin={{ top: 5, right: 5, left: -5, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis dataKey="date" />
                   <YAxis />
