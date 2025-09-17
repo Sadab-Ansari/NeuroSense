@@ -18,4 +18,16 @@ export default defineConfig(({ mode }) => ({
     // Make environment variables available as globals for compatibility
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || mode),
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          clerk: ['@clerk/clerk-react'],
+          ui: ['@radix-ui/react-slot', '@radix-ui/react-dialog'],
+        },
+      },
+    },
+  },
 }));

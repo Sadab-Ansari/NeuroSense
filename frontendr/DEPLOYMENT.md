@@ -1,5 +1,16 @@
 # Deployment Guide for NeuroSense Frontend
 
+## 🚨 IMPORTANT: SPA Routing Fix
+
+This guide now includes the solution for the **404 error on page reload** issue in production.
+
+## Files Added for SPA Support:
+
+- `vercel.json` - Main Vercel configuration for URL rewriting
+- `public/_redirects` - Fallback for other hosting platforms
+- Updated `vite.config.ts` - Improved build optimization
+- Updated `index.html` - Added base href for proper routing
+
 ## Environment Variables Setup
 
 ### Local Development
@@ -77,3 +88,24 @@ frontendr/
 ```
 
 Only `.env.local` should contain actual values, and it's automatically ignored by git.
+
+## 🚫 SPA Routing Issues (FIXED)
+
+**Problem**: 404 errors when reloading pages like `/dashboard` in production  
+**Solution**: The `vercel.json` file now handles this with proper URL rewriting
+
+**What was added:**
+
+- `vercel.json` with rewrite rules to serve `index.html` for all routes
+- `public/_redirects` as fallback for other hosting platforms
+- `<base href="/" />` in `index.html` for proper base path
+- Improved build chunking for better performance
+
+**After deployment**, all routes will work correctly on refresh!
+
+## 🚀 Deploy Now
+
+1. **Commit all changes to git**
+2. **Push to your repository**
+3. **Vercel will auto-deploy** with the new configuration
+4. **Test by visiting any route and refreshing** - should work perfectly!
