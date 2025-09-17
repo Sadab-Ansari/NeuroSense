@@ -14,4 +14,8 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  define: {
+    // Make environment variables available as globals for compatibility
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || mode),
+  },
 }));
