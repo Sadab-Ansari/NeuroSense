@@ -17,7 +17,7 @@ export default function Navbar() {
       "
     >
       <div className="text-xl font-bold tracking-wide">
-        My<span className="text-blue-500">Portfolio</span>
+        Neuro<span className="text-blue-500">Sense</span>
       </div>
 
       <div className="hidden md:flex gap-8 text-md font-medium absolute left-1/2 -translate-x-1/2">
